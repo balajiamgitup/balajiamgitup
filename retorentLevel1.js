@@ -1,15 +1,16 @@
 var prompt = require("prompt-sync")();
 var file = require("fs");
+const { parse } = require("path");
 class Restorent {
     constructor() {
         this.order_number;
         this.table_number;
-        // this.order_status;
-        this.bill = [];
+        this.order_status="";
+        this.bill=0 ;
         this.order_item ;
         this.ordered_list = [];
-        this.final_list = {};
-        this.table;
+       this.final_list = {};
+        this.table="";
 
     }
     iItemList() {
@@ -30,17 +31,19 @@ class Restorent {
         }
     }
     billling() {
+        this.bill=0;
         for (var key in this.order_item) {
             for (var i = 0; i < this.ordered_list.length; i++) {
                 if (this.ordered_list[i] == key) {
-                    this.bill.push(this.order_item[key]);
+                   // this.bill.push(this.order_item[key]);
+                   this.bill+=this.order_item[key];
                 }
                 else {
                     console.log("")
                 }
             }
         }
-        console.log(this.bill)
+      return  this.bill;
     }
     input(input1) {
         this.table=input1;
@@ -58,14 +61,16 @@ class Restorent {
         }
     }
     diply() {
-        console.log('Ordered items :' + this.ordered_list);
-        console.log("TABLE NUMBER :" + this.table);
-        console.log("Order number :" + this.order_number);
+        console.log('Ordered items ' + this.ordered_list);
+        console.log("TABLE NUMBER  " + this.table);
+        console.log("Order number  " + this.order_number);
+        console.log(" Bill           "+this.bill);
     }
     waiterAdd() {
         var input1 = prompt("Enter the food name to add :");
         var input2 = prompt("Enter the price :");
-        this.order_item[input1] = input2;
+        
+        this.order_item[input1] = parseInt( input2);
         console.log(this.order_item)
     }
 
