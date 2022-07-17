@@ -3,24 +3,44 @@ var restorentmain=require("./retorentLevel1");
 var prompt=require("prompt-sync")();
 var file=require("fs");
 var condition;
-var  input_table;
-var order_status;
+function save(){
+restorentmain.obj.final_list["Ordereditems"]=restorentmain.obj.ordered_list;
+restorentmain.obj.final_list["Amount"]=restorentmain.obj.bill;
+restorentmain.obj.final_list["Tablenumber"]=restorentmain.obj.table;
+restorentmain.obj.final_list["Ordernumber"]=restorentmain.obj.order_number;
+restorentmain.obj.final_list["OrderStatus"]=restorentmain.obj.order_status ;
+var data=JSON.stringify(restorentmain.obj.final_list,null,2)
+file.writeFileSync("order_detals.txt",data);
+}
 //restorentmain.obj.input("1a")
 function main(){
     var condition="true";
 while(condition!="false"){
-console.log("\4 1)User \n \2 2)Waiter \n \3 3)Exist \n \5 4)Svae \n \1 5)Kitchen \n \4 6)Saved data ")
+console.log("\4 1)User \n \2 2)Waiter \n \3 3)Exist  \n \1 5)Kitchen \n \4 6)Saved data ")
 var input2=prompt("enter the option :")
 if(input2=="1"){
     restorentmain.obj.iItemList();
-    restorentmain.obj.billling();
+   // restorentmain.obj.billling();
 console.log("Available tables ")
 console.log(restorentmain.obj.table_number);
-input_table = prompt("Enter the table number ")
-restorentmain.obj.input(input_table);
+restorentmain.obj.table = prompt("Enter the table number ")
+restorentmain.obj.input(restorentmain.obj.table);
 var input4=prompt("Enter the order status : ");
-order_status=input4;
+if(input4=="Booked"){
+restorentmain.obj.order_status=input4;
+restorentmain.obj.billling();
 restorentmain.obj.diply();
+var input=prompt("1)Save : ");
+if(input=="1"){
+save();
+}
+else{
+    console.log("wroung option ");
+}
+}
+else{
+    console.log("Your order canceled ")
+}
 }
 //******************************************************* */
 else if(input2=="2"){
@@ -36,7 +56,7 @@ else if(input2=="2"){
    }
    //*************update  */
    else if(input3=="3"){
-       console.log(" \7 1)Update price \1 1)Update table :");
+       console.log(" \7 1)Update price \1 2)Update table :");
        var input4=prompt("Enter the option :");
        if(input4=="1"){
            console.log(obj.order_item);
@@ -49,6 +69,7 @@ else if(input2=="2"){
            var table=prompt("Enter the table number ");
            restorentmain.obj.input(table);
            console.log(restorentmain.obj.table);
+           save();
        }
    }
    else{
@@ -61,17 +82,20 @@ else if (input2=="3"){
 }
 else if (input2=="5"){
     var input1=prompt("Update the  the order status : ");
-    order_status=input1;
+   restorentmain.obj.order_status=input1;
+    if(restorentmain.obj.order_status=="Cancel"){
+        file.truncateSync("order_detals.txt");
+    }
 }
-else if (input2=="4"){
-    restorentmain.obj.final_list["Ordereditems"]=restorentmain.obj.ordered_list;
-    restorentmain.obj.final_list["Amount"]=restorentmain.obj.bill;
-    restorentmain.obj.final_list["Tablenumber"]=input_table;
-    restorentmain.obj.final_list["Ordernumber"]=restorentmain.obj.order_number;
-    restorentmain.obj.final_list["OrderStatus"]=order_status;
- var data=JSON.stringify(restorentmain.obj.final_list,null,2)
-file.writeFileSync("order_detals.txt",data);
-}
+// else if (input2=="4"){
+// //     restorentmain.obj.final_list["Ordereditems"]=restorentmain.obj.ordered_list;
+// //     restorentmain.obj.final_list["Amount"]=restorentmain.obj.bill;
+// //     restorentmain.obj.final_list["Tablenumber"]=restorentmain.obj.table;
+// //     restorentmain.obj.final_list["Ordernumber"]=restorentmain.obj.order_number;
+// //     restorentmain.obj.final_list["OrderStatus"]=restorentmain.obj.order_status ;
+// //  var data=JSON.stringify(restorentmain.obj.final_list,null,2)
+// // file.writeFileSync("order_detals.txt",data);
+// }
 else if(input2=="6"){
     var fdata=file.readFileSync("order_detals.txt");
     console.log(JSON.parse(fdata));
@@ -81,9 +105,9 @@ else {
 }
 }
 }
-try{
+// try{
 main();
-}
-catch(e){
-    console.log(e.message);
-}
+// }
+// catch(e){
+//     console.log(e.message);
+// }
