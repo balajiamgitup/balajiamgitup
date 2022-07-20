@@ -1,0 +1,21 @@
+{
+  "name": "restorent",
+  "version": "1.0.0",
+  "description": "restorent application to track orders details",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "balajiamgitup"
+  },
+  "author": "Balaji",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^28.1.3"
+  },
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  }
+}
